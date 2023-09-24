@@ -11,7 +11,7 @@ public static class TestDatabaseFactory
         var database = new TestcontainersTestDatabase();
     #endif
 #else
-        var database = new SqliteTestDatabase();
+        SqliteTestDatabase database = new();
 #endif
 
         await database.InitialiseAsync();

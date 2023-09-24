@@ -12,7 +12,7 @@ public class DeleteTodoItemTests : BaseTestFixture
     [Test]
     public async Task ShouldRequireValidTodoItemId()
     {
-        var command = new DeleteTodoItemCommand(99);
+        DeleteTodoItemCommand command = new(99);
 
         await FluentActions.Invoking(() =>
             SendAsync(command)).Should().ThrowAsync<NotFoundException>();
@@ -21,20 +21,13 @@ public class DeleteTodoItemTests : BaseTestFixture
     [Test]
     public async Task ShouldDeleteTodoItem()
     {
-        var listId = await SendAsync(new CreateTodoListCommand
-        {
-            Title = "New List"
-        });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
 
-        var itemId = await SendAsync(new CreateTodoItemCommand
-        {
-            ListId = listId,
-            Title = "New Item"
-        });
+        int itemId = await SendAsync(new CreateTodoItemCommand { ListId = listId, Title = "New Item" });
 
         await SendAsync(new DeleteTodoItemCommand(itemId));
 
-        var item = await FindAsync<TodoItem>(itemId);
+        TodoItem? item = await FindAsync<TodoItem>(itemId);
 
         item.Should().BeNull();
     }

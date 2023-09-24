@@ -17,7 +17,9 @@ GET {{Web_HostAddress}}/Identity/Account/Login
 POST {{Web_HostAddress}}/Identity/Account/Login
 Content-Type: application/x-www-form-urlencoded
 
-Input.Email={{Email}}&Input.Password={{Password}}&__RequestVerificationToken={{RequestVerificationToken}}
+Input.Email = {{Email}} &
+Input.Password = {{Password}} &
+__RequestVerificationToken = {{RequestVerificationToken}}
 
 ###
 

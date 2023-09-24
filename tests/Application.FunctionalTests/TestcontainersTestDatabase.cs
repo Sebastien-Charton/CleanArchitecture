@@ -3,6 +3,7 @@ using CleanArchitecture.Infrastructure.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Respawn;
+using Respawn.Graph;
 using Testcontainers.PostgreSql;
 
 namespace CleanArchitecture.Application.FunctionalTests;
@@ -29,18 +30,16 @@ public class TestcontainersTestDatabase : ITestDatabase
 
         _connection = new SqlConnection(_connectionString);
 
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+        DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseNpgsql(_connectionString)
             .Options;
 
-        var context = new ApplicationDbContext(options);
+        ApplicationDbContext context = new(options);
 
         context.Database.Migrate();
 
-        _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
-        {
-            TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
-        });
+        _respawner = await Respawner.CreateAsync(_connectionString,
+            new RespawnerOptions { TablesToIgnore = new Table[] { "__EFMigrationsHistory" } });
     }
 
     public DbConnection GetConnection()

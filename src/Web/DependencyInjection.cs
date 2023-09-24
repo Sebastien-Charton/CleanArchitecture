@@ -28,8 +28,9 @@ public static class DependencyInjection
 
         services.AddScoped(provider =>
         {
-            var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
-            var loggerFactory = provider.GetService<ILoggerFactory>();
+            IEnumerable<FluentValidationRule>? validationRules =
+                provider.GetService<IEnumerable<FluentValidationRule>>();
+            ILoggerFactory? loggerFactory = provider.GetService<ILoggerFactory>();
 
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
@@ -45,19 +46,20 @@ public static class DependencyInjection
             configure.Title = "CleanArchitecture API";
 
             // Add the fluent validations schema processor
-            var fluentValidationSchemaProcessor = 
+            FluentValidationSchemaProcessor fluentValidationSchemaProcessor =
                 sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
 
             configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
-            
+
             // Add JWT
-            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-            {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
-            });
+            configure.AddSecurity("JWT", Enumerable.Empty<string>(),
+                new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
@@ -65,9 +67,10 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddKeyVaultIfConfigured(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddKeyVaultIfConfigured(this IServiceCollection services,
+        ConfigurationManager configuration)
     {
-        var keyVaultUri = configuration["KeyVaultUri"];
+        string? keyVaultUri = configuration["KeyVaultUri"];
         if (!string.IsNullOrWhiteSpace(keyVaultUri))
         {
             configuration.AddAzureKeyVault(

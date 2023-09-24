@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Respawn;
+using Respawn.Graph;
 
 namespace CleanArchitecture.Application.FunctionalTests;
 
@@ -15,12 +16,12 @@ public class PostgreSqlTestDatabase : ITestDatabase
 
     public PostgreSqlTestDatabase()
     {
-        var configuration = new ConfigurationBuilder()
+        IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
         Guard.Against.Null(connectionString);
 
@@ -31,18 +32,16 @@ public class PostgreSqlTestDatabase : ITestDatabase
     {
         _connection = new SqlConnection(_connectionString);
 
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+        DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseNpgsql(_connectionString)
             .Options;
 
-        var context = new ApplicationDbContext(options);
+        ApplicationDbContext context = new(options);
 
         context.Database.Migrate();
 
-        _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
-        {
-            TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
-        });
+        _respawner = await Respawner.CreateAsync(_connectionString,
+            new RespawnerOptions { TablesToIgnore = new Table[] { "__EFMigrationsHistory" } });
     }
 
     public DbConnection GetConnection()

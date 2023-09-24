@@ -8,30 +8,30 @@
   <!--#if ('True' == 'False')-->
   <!-- The above expression ensures this block will be excluded when the project is created using `dotnet new ca-sln` -->
   <ItemGroup>
-    <Compile Remove="Data\SQLite\**" />
-    <EmbeddedResource Remove="Data\SQLite\**" />
-    <None Remove="Data\SQLite\**" />
+    <Compile Remove="Data\SQLite\**"/>
+    <EmbeddedResource Remove="Data\SQLite\**"/>
+    <None Remove="Data\SQLite\**"/>
   </ItemGroup>
   <!--#endif-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
     <!--#if (UseSQLite)-->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"/>
     <!--#endif-->
     <!--#if (UsePostgreSQL)-->
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
     <!--#endif-->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
+    <Folder Include="Data\Migrations\"/>
   </ItemGroup>
 
 </Project>

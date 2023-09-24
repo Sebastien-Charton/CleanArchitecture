@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItemDetail;
@@ -25,7 +26,7 @@ public class UpdateTodoItemDetailCommandHandler : IRequestHandler<UpdateTodoItem
 
     public async Task Handle(UpdateTodoItemDetailCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.TodoItems
+        TodoItem? entity = await _context.TodoItems
             .FindAsync(new object[] { request.Id }, cancellationToken);
 
         Guard.Against.NotFound(request.Id, entity);

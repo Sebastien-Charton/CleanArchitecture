@@ -2,7 +2,8 @@
 
 public static class IEndpointRouteBuilderExtensions
 {
-    public static IEndpointRouteBuilder MapGet(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
+    public static IEndpointRouteBuilder MapGet(this IEndpointRouteBuilder builder, Delegate handler,
+        string pattern = "")
     {
         Guard.Against.AnonymousMethod(handler);
 
@@ -12,7 +13,8 @@ public static class IEndpointRouteBuilderExtensions
         return builder;
     }
 
-    public static IEndpointRouteBuilder MapPost(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
+    public static IEndpointRouteBuilder MapPost(this IEndpointRouteBuilder builder, Delegate handler,
+        string pattern = "")
     {
         Guard.Against.AnonymousMethod(handler);
 

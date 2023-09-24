@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.TodoLists.Commands.DeleteTodoList;
 
@@ -15,7 +16,7 @@ public class DeleteTodoListCommandHandler : IRequestHandler<DeleteTodoListComman
 
     public async Task Handle(DeleteTodoListCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.TodoLists
+        TodoList? entity = await _context.TodoLists
             .Where(l => l.Id == request.Id)
             .SingleOrDefaultAsync(cancellationToken);
 

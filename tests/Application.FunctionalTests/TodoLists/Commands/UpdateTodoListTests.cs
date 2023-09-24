@@ -12,54 +12,37 @@ public class UpdateTodoListTests : BaseTestFixture
     [Test]
     public async Task ShouldRequireValidTodoListId()
     {
-        var command = new UpdateTodoListCommand { Id = 99, Title = "New Title" };
+        UpdateTodoListCommand command = new() { Id = 99, Title = "New Title" };
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<NotFoundException>();
     }
 
     [Test]
     public async Task ShouldRequireUniqueTitle()
     {
-        var listId = await SendAsync(new CreateTodoListCommand
-        {
-            Title = "New List"
-        });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
 
-        await SendAsync(new CreateTodoListCommand
-        {
-            Title = "Other List"
-        });
+        await SendAsync(new CreateTodoListCommand { Title = "Other List" });
 
-        var command = new UpdateTodoListCommand
-        {
-            Id = listId,
-            Title = "Other List"
-        };
+        UpdateTodoListCommand command = new() { Id = listId, Title = "Other List" };
 
         (await FluentActions.Invoking(() =>
-            SendAsync(command))
+                    SendAsync(command))
                 .Should().ThrowAsync<ValidationException>().Where(ex => ex.Errors.ContainsKey("Title")))
-                .And.Errors["Title"].Should().Contain("'Title' must be unique.");
+            .And.Errors["Title"].Should().Contain("'Title' must be unique.");
     }
 
     [Test]
     public async Task ShouldUpdateTodoList()
     {
-        var userId = await RunAsDefaultUserAsync();
+        string userId = await RunAsDefaultUserAsync();
 
-        var listId = await SendAsync(new CreateTodoListCommand
-        {
-            Title = "New List"
-        });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
 
-        var command = new UpdateTodoListCommand
-        {
-            Id = listId,
-            Title = "Updated List Title"
-        };
+        UpdateTodoListCommand command = new() { Id = listId, Title = "Updated List Title" };
 
         await SendAsync(command);
 
-        var list = await FindAsync<TodoList>(listId);
+        TodoList? list = await FindAsync<TodoList>(listId);
 
         list.Should().NotBeNull();
         list!.Title.Should().Be(command.Title);
