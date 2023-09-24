@@ -26,11 +26,10 @@ public static class DependencyInjection
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
 
-#if (UseSQLite)
-            options.UseSqlite(connectionString);
-#endif
-#if(UsePostgreSQL)
+#if (UsePostgreSQL)
             options.UseNpgsql(connectionString);
+#else
+            options.UseSqlite(connectionString);
 #endif
         });
 

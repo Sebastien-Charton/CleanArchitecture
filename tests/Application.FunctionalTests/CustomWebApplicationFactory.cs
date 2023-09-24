@@ -35,11 +35,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 .AddDbContext<ApplicationDbContext>((sp, options) =>
                 {
                     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-#if (UseSQLite)
+#if (UsePostgreSQL)
+                    options.UseNpgsql(_connection);
+#else
                     options.UseSqlite(_connection);
-#endif
-#if(UsePostgreSQL)
-                    options.UseNpgsql(connectionString);
 #endif
                 });
         });
