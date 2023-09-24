@@ -1,13 +1,13 @@
 name: CICD
 
 on: 
-  push:
-    branches: [ main ]
-    paths-ignore:
-      - .gitignore
-      - CODE_OF_CONDUCT.md
-      - LICENSE
-      - README.md
+  # push:
+  #   branches: [ main ]
+  #   paths-ignore:
+  #     - .gitignore
+  #     - CODE_OF_CONDUCT.md
+  #     - LICENSE
+  #     - README.md
   workflow_dispatch:
 
 permissions:
