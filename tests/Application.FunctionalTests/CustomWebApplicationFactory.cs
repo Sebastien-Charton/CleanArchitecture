@@ -37,8 +37,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 #if (UseSQLite)
                     options.UseSqlite(_connection);
-#else
-                    options.UseSqlServer(_connection);
+#endif
+#if(UsePostgreSQL)
+                    options.UseNpgsql(connectionString);
 #endif
                 });
         });

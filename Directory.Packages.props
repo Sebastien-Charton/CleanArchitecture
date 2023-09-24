@@ -23,8 +23,8 @@
     <!--#if (UseSQLite)-->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.7.23375.4" />
     <!--#endif-->
-    <!--#if (UseLocalDB)-->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-preview.7.23375.4" />
+    <!--#if (UsePostgreSQL)-->
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-rc.1" />
     <!--#endif-->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.7.23375.4" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.7.23375.6" />
@@ -39,6 +39,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="Respawn" Version="6.1.0" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.3.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="3.5.0" />
     <PackageVersion Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.6.2" />
   </ItemGroup>
 </Project>

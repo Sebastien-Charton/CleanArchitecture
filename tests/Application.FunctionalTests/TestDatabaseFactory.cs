@@ -6,8 +6,9 @@ public static class TestDatabaseFactory
     {
 #if (UseSQLite)
         var database = new SqliteTestDatabase();
-#else
-#if DEBUG
+#endif
+#if(UsePostgreSQL)
+    #if DEBUG
         var database = new SqlServerTestDatabase();
     #else
         var database = new TestcontainersTestDatabase();

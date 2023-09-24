@@ -22,11 +22,13 @@
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Whether to use SQLite instead of LocalDB."
+      "description": "Use SQLite."
     },
-    "UseLocalDB": {
-      "type": "computed",
-      "value": "(!UseSQLite)"
+    "UsePostgreSQL": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Use PostgreSQL."
     }
   },
   "sources": [
@@ -46,15 +48,6 @@
       },
       "modifiers": [
         {
-          "condition": "(UseLocalDB)",
-          "exclude": [
-            "src/Infrastructure/Data/SQLite/**",
-            "src/Web/appsettings.SQLite.json",
-            "src/Web/app.db",
-            "tests/Application.FunctionalTests/SqliteTestDatabase.cs"
-          ]
-        },
-        {
           "condition": "(UseSQLite)",
           "exclude": [
             "src/Infrastructure/Data/Migrations/**",
@@ -66,6 +59,20 @@
             "src/Infrastructure/Data/SQLite/" : "src/Infrastructure/Data/Migrations/",
             "appsettings.SQLite.json": "appsettings.json",
             "TestDatabase.Sqlite.cs": "TestDatabase.cs"
+          }
+        },
+        {
+          "condition": "(UsePostgreSQL)",
+          "exclude": [
+            "src/Infrastructure/Data/Migrations/**",
+            "src/Web/appsettings.json",
+            "tests/Application.FunctionalTests/SqlServerTestDatabase.cs",
+            "tests/Application.FunctionalTests/TestcontainersTestDatabase.cs"
+          ],
+          "rename": {
+            "src/Infrastructure/Data/SQLite/" : "src/Infrastructure/Data/Migrations/",
+            "appsettings.PostgreSQL.json": "appsettings.json",
+            "TestDatabase.PostgreSQL.cs": "TestDatabase.cs"
           }
         }
       ]

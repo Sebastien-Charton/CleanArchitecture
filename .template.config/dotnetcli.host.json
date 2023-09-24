@@ -2,6 +2,9 @@
   "symbolInfo": {
     "UseSQLite": {
       "longName": "use-sqlite"
+    },
+    "UsePostgreSQL": {
+      "longName": "use-postgresql"
     }
   }
 }

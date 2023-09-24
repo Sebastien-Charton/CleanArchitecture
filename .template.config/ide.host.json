@@ -12,6 +12,16 @@
         "text": "Use SQLite for database (default is LocalDB)."
       },
       "isVisible": true
+    },
+    {
+      "id": "UsePostgreSQL",
+      "name": {
+        "text": "Use UsePostgreSQL"
+      },
+      "description": {
+        "text": "Use UsePostgreSQL for database (default is LocalDB)."
+      },
+      "isVisible": true
     }
   ]
 }
