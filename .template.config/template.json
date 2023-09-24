@@ -52,7 +52,7 @@
           "exclude": [
             "src/Infrastructure/Data/Migrations/**",
             "src/Web/appsettings.json",
-            "tests/Application.FunctionalTests/SqlServerTestDatabase.cs",
+            "tests/Application.FunctionalTests/PostgreSQLTestDatabase.cs",
             "tests/Application.FunctionalTests/TestcontainersTestDatabase.cs"
           ],
           "rename": {
@@ -66,14 +66,8 @@
           "exclude": [
             "src/Infrastructure/Data/Migrations/**",
             "src/Web/appsettings.json",
-            "tests/Application.FunctionalTests/SqlServerTestDatabase.cs",
-            "tests/Application.FunctionalTests/TestcontainersTestDatabase.cs"
-          ],
-          "rename": {
-            "src/Infrastructure/Data/SQLite/" : "src/Infrastructure/Data/Migrations/",
-            "appsettings.PostgreSQL.json": "appsettings.json",
-            "TestDatabase.PostgreSQL.cs": "TestDatabase.cs"
-          }
+            "tests/Application.FunctionalTests/SqliteTestDatabase.cs"
+          ]
         }
       ]
     }

@@ -3,20 +3,20 @@ using CleanArchitecture.Infrastructure.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Respawn;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 
 namespace CleanArchitecture.Application.FunctionalTests;
 
 public class TestcontainersTestDatabase : ITestDatabase
 {
-    private readonly MsSqlContainer _container;
+    private readonly PostgreSqlContainer _container;
     private DbConnection _connection = null!;
     private string _connectionString = null!;
     private Respawner _respawner = null!;
 
     public TestcontainersTestDatabase()
     {
-        _container = new MsSqlBuilder()
+        _container = new PostgreSqlBuilder()
             .WithAutoRemove(true)
             .Build();
     }
