@@ -5,7 +5,7 @@
     <id>Clean.Architecture.Solution.Template</id>
     <version>8.0.100-rc.1.23455.8</version>
     <title>Clean Architecture Solution Template</title>
-    <authors>JasonTaylorDev</authors>
+    <authors>Sebastien-Charton</authors>
     <description>Clean Architecture Solution Template for .NET 8.</description>
     <summary>
       A Clean Architecture Solution Template for creating Web API with ASP.NET Core.
@@ -14,8 +14,8 @@
       Update CICD workflow to request required permissions.
     </releaseNotes>
 
-    <projectUrl>https://github.com/JasonTaylorDev/CleanArchitecture</projectUrl>
-    <repository type="git" url="https://github.com/JasonTaylorDev/CleanArchitecture.git" branch="main" />
+    <projectUrl>https://github.com/Sebastien-Charton/CleanArchitecture</projectUrl>
+    <repository type="git" url="https://github.com/Sebastien-Charton/CleanArchitecture" branch="main" />
 
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
