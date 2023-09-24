@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'CleanArchitecture.nuspec'
-  workflow_dispatch:
 
 jobs:
   publish:
