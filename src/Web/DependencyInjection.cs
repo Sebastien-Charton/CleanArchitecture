@@ -3,11 +3,8 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-
-#if (UseApiOnly)
 using NSwag;
 using NSwag.Generation.Processors.Security;
-#endif
 using ZymLabs.NSwag.FluentValidation;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -52,8 +49,7 @@ public static class DependencyInjection
                 sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
 
             configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
-
-#if (UseApiOnly)
+            
             // Add JWT
             configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
             {
@@ -64,7 +60,6 @@ public static class DependencyInjection
             });
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-#endif
         });
 
         return services;

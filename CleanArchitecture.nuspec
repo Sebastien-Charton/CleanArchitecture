@@ -8,7 +8,7 @@
     <authors>JasonTaylorDev</authors>
     <description>Clean Architecture Solution Template for .NET 8.</description>
     <summary>
-      A Clean Architecture Solution Template for creating apps using Angular, React, or Web API only with ASP.NET Core.
+      A Clean Architecture Solution Template for creating Web API with ASP.NET Core.
     </summary>
     <releaseNotes>
       Update CICD workflow to request required permissions.
@@ -19,7 +19,7 @@
 
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>clean-architecture project template csharp dotnet angular react</tags>
+    <tags>clean-architecture project template csharp dotnet</tags>
     <icon>icon.png</icon>
     <readme>README.md</readme>
 

@@ -1,5 +1,4 @@
-﻿#if (UseApiOnly)
-using CleanArchitecture.Infrastructure.Identity;
+﻿using CleanArchitecture.Infrastructure.Identity;
 
 namespace CleanArchitecture.Web.Endpoints;
 
@@ -11,4 +10,4 @@ public class Users : EndpointGroupBase
             .MapIdentityApi<ApplicationUser>();
     }
 }
-#endif
+

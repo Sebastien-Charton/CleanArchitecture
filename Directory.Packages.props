@@ -18,9 +18,6 @@
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0-preview.6.23329.11" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-preview.7.23375.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0-preview.7.23375.9" />
-    <!--#if (!UseApiOnly)-->
-    <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.0-preview.7.23375.9" />
-    <!--#endif-->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.7.23375.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-preview.7.23375.4" />
     <!--#if (UseSQLite)-->
@@ -43,10 +40,5 @@
     <PackageVersion Include="Respawn" Version="6.1.0" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.3.0" />
     <PackageVersion Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.6.2" />
-    <!--#if(!UseApiOnly)-->
-    <PackageVersion Include="Microsoft.Playwright" Version="1.35.0" />
-    <PackageVersion Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
-    <PackageVersion Include="SpecFlow.NUnit" Version="3.9.74" />
-    <!--#endif-->
   </ItemGroup>
 </Project>

@@ -4,16 +4,6 @@
   "icon": "icon.png",
   "symbolInfo": [
     {
-      "id": "ClientFramework",
-      "name": {
-        "text": "Client Framework"
-      },
-      "description": {
-        "text": "Select the Client Framework type, or select None for Web API only."
-      },
-      "isVisible": true
-    },
-    {
       "id": "UseSQLite",
       "name": {
         "text": "Use SQLite"

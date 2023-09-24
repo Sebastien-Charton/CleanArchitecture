@@ -47,7 +47,6 @@ dotnet new install Clean.Architecture.Solution.Template::8.0.0-preview.7.2
 
 ## Test
 
-<!--#if (UseApiOnly) -->
 The solution contains unit, integration, and functional tests.
 
 To run the tests:
@@ -74,7 +73,6 @@ Then, in a new console, run the tests:
 cd .\src\Web\
 dotnet test
 ```
-<!--#endif -->
 
 ## Help
 To learn more about the template go to the [project website](https://github.com/JasonTaylorDev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug, and discuss the template with other users.
