@@ -15,7 +15,7 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.6.23329.4");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0-rc.1.23419.6");
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.TodoItem", b =>
                 {
