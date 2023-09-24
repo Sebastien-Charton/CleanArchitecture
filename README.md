@@ -70,7 +70,7 @@ Running database migrations is easy. Ensure you add the following flags to your 
 
 For example, to add a new migration from the root folder:
 
- `dotnet ef migrations add "SampleMigration" --project src\Infrastructure --startup-project src\Web --output-dir Data\Migrations`
+`dotnet ef migrations add "SampleMigration" --project src\Infrastructure --startup-project src\Web --output-dir Data\Migrations`
 
 ## Deploy
 
