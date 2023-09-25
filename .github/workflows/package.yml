@@ -1,12 +1,13 @@
-name: Package
+name: Release to NuGet
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'CleanArchitecture.nuspec'
-  workflow_dispatch:
+  release:
+    types: [published]
+    tags:
+      - '*'
+
+env:
+  RELEASE_TAG: ${{github.ref_name}}
 
 jobs:
   publish:
@@ -24,7 +25,7 @@ jobs:
           nuget-version: '6.x'
 
       - name: Create the package
-        run: nuget pack CleanArchitecture.nuspec -NoDefaultExcludes
+        run: nuget pack CleanArchitecture.nuspec /p:Version=$RELEASE_TAG -NoDefaultExcludes
         
       - name: Publish the package
         run: nuget push *.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}} -SkipDuplicate
