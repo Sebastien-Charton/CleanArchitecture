@@ -92,7 +92,7 @@
           "useRequestAndResponseSerializationSettings": false,
           "serializeTypeInformation": false,
           "queryNullValue": "",
-          "className": "CleanArchitectureApiClient",
+          "className": "CleanArchitectureClient",
           "operationGenerationMode": "SingleClientFromOperationId",
           "additionalNamespaceUsages": [],
           "additionalContractNamespaceUsages": [],
@@ -146,7 +146,7 @@
           "serviceSchemes": [
             "https"
           ],
-          "output": "../Sdks/Sdk/CleanArchitectureApiClient.cs",
+          "output": "../Sdks/Sdk/CleanArchitectureClient.cs",
           "newLineBehavior": "Auto"
         }
   }
