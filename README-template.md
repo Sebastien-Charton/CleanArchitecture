@@ -15,7 +15,7 @@ cd .\src\Web\
 dotnet watch run
 ```
 
-Navigate to https://localhost:5001. The application will automatically reload if you change any of the source files.
+Navigate to <https://localhost:5001>. The application will automatically reload if you change any of the source files.
 
 ## Code Styles & Formatting
 
@@ -29,13 +29,13 @@ Start in the `.\src\Application\` folder.
 
 Create a new command:
 
-```
+```sh
 dotnet new ca-usecase --name CreateTodoList --feature-name TodoLists --usecase-type command --return-type int
 ```
 
 Create a new query:
 
-```
+```sh
 dotnet new ca-usecase -n GetTodos -fn TodoLists -ut query -rt TodosVm
 ```
 
@@ -50,6 +50,7 @@ dotnet new install Clean.Architecture.Solution.Template::8.0.0-preview.7.2
 The solution contains unit, integration, and functional tests.
 
 To run the tests:
+
 ```bash
 dotnet test
 ```
@@ -57,6 +58,7 @@ dotnet test
 The solution contains unit, integration, functional, and acceptance tests.
 
 To run the unit, integration, and functional tests (excluding acceptance tests):
+
 ```bash
 dotnet test --filter "FullyQualifiedName!~AcceptanceTests"
 ```
@@ -69,10 +71,12 @@ dotnet run
 ```
 
 Then, in a new console, run the tests:
+
 ```bash
 cd .\src\Web\
 dotnet test
 ```
 
 ## Help
+
 To learn more about the template go to the [project website](https://github.com/JasonTaylorDev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug, and discuss the template with other users.

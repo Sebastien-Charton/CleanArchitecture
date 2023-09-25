@@ -25,7 +25,6 @@ public static class DependencyInjection
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-
 #if (UsePostgreSQL)
             options.UseNpgsql(connectionString);
 #else
