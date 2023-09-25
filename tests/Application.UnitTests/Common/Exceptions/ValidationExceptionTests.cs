@@ -1,13 +1,13 @@
 ﻿using CleanArchitecture.Application.Common.Exceptions;
 using FluentAssertions;
 using FluentValidation.Results;
-using NUnit.Framework;
+using Xunit;
 
 namespace CleanArchitecture.Application.UnitTests.Common.Exceptions;
 
 public class ValidationExceptionTests
 {
-    [Test]
+    [Fact]
     public void DefaultConstructorCreatesAnEmptyErrorDictionary()
     {
         IDictionary<string, string[]> actual = new ValidationException().Errors;
@@ -15,7 +15,7 @@ public class ValidationExceptionTests
         actual.Keys.Should().BeEquivalentTo(Array.Empty<string>());
     }
 
-    [Test]
+    [Fact]
     public void SingleValidationFailureCreatesASingleElementErrorDictionary()
     {
         List<ValidationFailure> failures = new() { new ValidationFailure("Age", "must be over 18") };
@@ -26,7 +26,7 @@ public class ValidationExceptionTests
         actual["Age"].Should().BeEquivalentTo("must be over 18");
     }
 
-    [Test]
+    [Fact]
     public void
         MulitpleValidationFailureForMultiplePropertiesCreatesAMultipleElementErrorDictionaryEachWithMultipleValues()
     {

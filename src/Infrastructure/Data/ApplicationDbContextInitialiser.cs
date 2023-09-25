@@ -1,8 +1,5 @@
-﻿using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Infrastructure.Identity;
+﻿using CleanArchitecture.Domain.Entities;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,16 +25,12 @@ public class ApplicationDbContextInitialiser
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<ApplicationDbContextInitialiser> _logger;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger,
-        ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        ApplicationDbContext context)
     {
         _logger = logger;
         _context = context;
-        _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     public async Task InitialiseAsync()
@@ -68,27 +61,6 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-        // Default roles
-        IdentityRole administratorRole = new(Roles.Administrator);
-
-        if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
-        {
-            await _roleManager.CreateAsync(administratorRole);
-        }
-
-        // Default users
-        ApplicationUser administrator =
-            new() { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
-        if (_userManager.Users.All(u => u.UserName != administrator.UserName))
-        {
-            await _userManager.CreateAsync(administrator, "Administrator1!");
-            if (!string.IsNullOrWhiteSpace(administratorRole.Name))
-            {
-                await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
-            }
-        }
-
         // Default data
         // Seed, if necessary
         if (!_context.TodoLists.Any())

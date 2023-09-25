@@ -6,7 +6,7 @@ using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using CleanArchitecture.Application.TodoLists.Queries.GetTodos;
 using CleanArchitecture.Domain.Entities;
-using NUnit.Framework;
+using Xunit;
 
 namespace CleanArchitecture.Application.UnitTests.Common.Mappings;
 
@@ -23,18 +23,18 @@ public class MappingTests
         _mapper = _configuration.CreateMapper();
     }
 
-    [Test]
+    [Fact]
     public void ShouldHaveValidConfiguration()
     {
         _configuration.AssertConfigurationIsValid();
     }
 
-    [Test]
-    [TestCase(typeof(TodoList), typeof(TodoListDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
-    [TestCase(typeof(TodoList), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemBriefDto))]
+    [Theory]
+    [InlineData(typeof(TodoList), typeof(TodoListDto))]
+    [InlineData(typeof(TodoItem), typeof(TodoItemDto))]
+    [InlineData(typeof(TodoList), typeof(LookupDto))]
+    [InlineData(typeof(TodoItem), typeof(LookupDto))]
+    [InlineData(typeof(TodoItem), typeof(TodoItemBriefDto))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         object instance = GetInstanceOf(source);
