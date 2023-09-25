@@ -1,26 +1,19 @@
 ﻿using System.Diagnostics;
-using CleanArchitecture.Application.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Common.Behaviours;
 
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    private readonly IIdentityService _identityService;
     private readonly ILogger<TRequest> _logger;
     private readonly Stopwatch _timer;
-    private readonly IUser _user;
 
     public PerformanceBehaviour(
-        ILogger<TRequest> logger,
-        IUser user,
-        IIdentityService identityService)
+        ILogger<TRequest> logger)
     {
         _timer = new Stopwatch();
 
         _logger = logger;
-        _user = user;
-        _identityService = identityService;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
@@ -37,17 +30,16 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         if (elapsedMilliseconds > 500)
         {
             string requestName = typeof(TRequest).Name;
-            string userId = _user.Id ?? string.Empty;
             string? userName = string.Empty;
 
-            if (!string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(userName))
             {
-                userName = await _identityService.GetUserNameAsync(userId);
+                userName = "Performance";
             }
 
             _logger.LogWarning(
-                "CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
-                requestName, elapsedMilliseconds, userId, userName, request);
+                "CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserName} {@Request}",
+                requestName, elapsedMilliseconds, userName, request);
         }
 
         return response;
