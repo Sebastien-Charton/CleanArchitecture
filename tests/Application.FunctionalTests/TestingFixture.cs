@@ -8,22 +8,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Application.FunctionalTests;
 
-[SetUpFixture]
-public class Testing
+public class TestingFixture : IAsyncDisposable
 {
     private static ITestDatabase _database = null!;
     private static CustomWebApplicationFactory _factory = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
     private static string? _userId;
 
-    [OneTimeSetUp]
-    public async Task RunBeforeAnyTests()
+    public TestingFixture()
     {
-        _database = await TestDatabaseFactory.CreateAsync();
+        _database = TestDatabaseFactory.CreateAsync().GetAwaiter().GetResult();
 
         _factory = new CustomWebApplicationFactory(_database.GetConnection());
 
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
+
+        ResetState().Wait();
+
+        RunAsDefaultUserAsync().Wait();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _database.DisposeAsync();
+        await _factory.DisposeAsync();
     }
 
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
@@ -68,29 +76,39 @@ public class Testing
 
         ApplicationUser user = new() { UserName = userName, Email = userName };
 
-        IdentityResult result = await userManager.CreateAsync(user, password);
+        ApplicationUser? existingUser = await userManager.FindByNameAsync(userName);
 
-        if (roles.Any())
+        IdentityResult createUserResult;
+        if (existingUser is null)
         {
-            RoleManager<IdentityRole> roleManager =
-                scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            createUserResult = await userManager.CreateAsync(user, password);
 
-            foreach (string role in roles)
+            if (roles.Any())
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                RoleManager<IdentityRole> roleManager =
+                    scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                foreach (string role in roles)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+
+                await userManager.AddToRolesAsync(user, roles);
             }
 
-            await userManager.AddToRolesAsync(user, roles);
-        }
+            if (createUserResult.Succeeded)
+            {
+                _userId = user.Id;
 
-        if (result.Succeeded)
+                return _userId;
+            }
+        }
+        else
         {
-            _userId = user.Id;
-
-            return _userId;
+            return existingUser.Id;
         }
 
-        string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
+        string errors = string.Join(Environment.NewLine, createUserResult.ToApplicationResult().Errors);
 
         throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
     }
@@ -137,12 +155,5 @@ public class Testing
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.Set<TEntity>().CountAsync();
-    }
-
-    [OneTimeTearDown]
-    public async Task RunAfterAnyTests()
-    {
-        await _database.DisposeAsync();
-        await _factory.DisposeAsync();
     }
 }

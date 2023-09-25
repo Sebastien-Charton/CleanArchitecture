@@ -5,11 +5,18 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoItems.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class CreateTodoItemTests : BaseTestFixture
+public class CreateTodoItemTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public CreateTodoItemTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireMinimumFields()
     {
         CreateTodoItemCommand command = new();
@@ -18,12 +25,12 @@ public class CreateTodoItemTests : BaseTestFixture
             SendAsync(command)).Should().ThrowAsync<ValidationException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldCreateTodoItem()
     {
         string userId = await RunAsDefaultUserAsync();
 
-        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = $"New List {Guid.NewGuid()}" });
 
         CreateTodoItemCommand command = new() { ListId = listId, Title = "Tasks" };
 

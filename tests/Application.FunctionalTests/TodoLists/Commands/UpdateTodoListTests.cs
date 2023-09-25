@@ -5,18 +5,25 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoLists.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class UpdateTodoListTests : BaseTestFixture
+public class UpdateTodoListTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public UpdateTodoListTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireValidTodoListId()
     {
         UpdateTodoListCommand command = new() { Id = 99, Title = "New Title" };
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<NotFoundException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldRequireUniqueTitle()
     {
         int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
@@ -31,7 +38,7 @@ public class UpdateTodoListTests : BaseTestFixture
             .And.Errors["Title"].Should().Contain("'Title' must be unique.");
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldUpdateTodoList()
     {
         string userId = await RunAsDefaultUserAsync();

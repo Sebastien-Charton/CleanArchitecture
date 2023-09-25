@@ -5,11 +5,18 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoItems.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class DeleteTodoItemTests : BaseTestFixture
+public class DeleteTodoItemTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public DeleteTodoItemTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireValidTodoItemId()
     {
         DeleteTodoItemCommand command = new(99);
@@ -18,10 +25,10 @@ public class DeleteTodoItemTests : BaseTestFixture
             SendAsync(command)).Should().ThrowAsync<NotFoundException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldDeleteTodoItem()
     {
-        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = $"New List {Guid.NewGuid()}" });
 
         int itemId = await SendAsync(new CreateTodoItemCommand { ListId = listId, Title = "New Item" });
 

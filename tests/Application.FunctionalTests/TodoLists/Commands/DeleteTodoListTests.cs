@@ -4,18 +4,25 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoLists.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class DeleteTodoListTests : BaseTestFixture
+public class DeleteTodoListTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public DeleteTodoListTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireValidTodoListId()
     {
         DeleteTodoListCommand command = new(99);
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<NotFoundException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldDeleteTodoList()
     {
         int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });

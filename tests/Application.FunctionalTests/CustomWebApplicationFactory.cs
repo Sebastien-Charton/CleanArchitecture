@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CleanArchitecture.Application.FunctionalTests;
 
-using static Testing;
+using static TestingFixture;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {

@@ -7,23 +7,30 @@ using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoItems.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class UpdateTodoItemDetailTests : BaseTestFixture
+public class UpdateTodoItemDetailTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public UpdateTodoItemDetailTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireValidTodoItemId()
     {
         UpdateTodoItemCommand command = new() { Id = 99, Title = "New Title" };
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<NotFoundException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldUpdateTodoItem()
     {
         string userId = await RunAsDefaultUserAsync();
 
-        int listId = await SendAsync(new CreateTodoListCommand { Title = "New List" });
+        int listId = await SendAsync(new CreateTodoListCommand { Title = $"New List {Guid.NewGuid()}" });
 
         int itemId = await SendAsync(new CreateTodoItemCommand { ListId = listId, Title = "New Item" });
 

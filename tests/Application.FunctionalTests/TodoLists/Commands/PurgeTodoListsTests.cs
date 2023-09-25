@@ -6,11 +6,18 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoLists.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class PurgeTodoListsTests : BaseTestFixture
+public class PurgeTodoListsTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public PurgeTodoListsTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldDenyAnonymousUser()
     {
         PurgeTodoListsCommand command = new();
@@ -22,7 +29,7 @@ public class PurgeTodoListsTests : BaseTestFixture
         await action.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldDenyNonAdministrator()
     {
         await RunAsDefaultUserAsync();
@@ -34,7 +41,7 @@ public class PurgeTodoListsTests : BaseTestFixture
         await action.Should().ThrowAsync<ForbiddenAccessException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldAllowAdministrator()
     {
         await RunAsAdministratorAsync();
@@ -46,7 +53,7 @@ public class PurgeTodoListsTests : BaseTestFixture
         await action.Should().NotThrowAsync<ForbiddenAccessException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldDeleteAllLists()
     {
         await RunAsAdministratorAsync();

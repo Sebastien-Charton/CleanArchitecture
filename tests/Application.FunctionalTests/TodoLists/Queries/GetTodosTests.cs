@@ -4,11 +4,18 @@ using CleanArchitecture.Domain.ValueObjects;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoLists.Queries;
 
-using static Testing;
+using static TestingFixture;
 
-public class GetTodosTests : BaseTestFixture
+public class GetTodosTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public GetTodosTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldReturnPriorityLevels()
     {
         await RunAsDefaultUserAsync();
@@ -20,7 +27,7 @@ public class GetTodosTests : BaseTestFixture
         result.PriorityLevels.Should().NotBeEmpty();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldReturnAllListsAndItems()
     {
         await RunAsDefaultUserAsync();
@@ -49,7 +56,7 @@ public class GetTodosTests : BaseTestFixture
         result.Lists.First().Items.Should().HaveCount(7);
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldDenyAnonymousUser()
     {
         GetTodosQuery query = new();

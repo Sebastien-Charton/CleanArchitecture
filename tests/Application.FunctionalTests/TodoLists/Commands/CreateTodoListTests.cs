@@ -4,18 +4,25 @@ using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.FunctionalTests.TodoLists.Commands;
 
-using static Testing;
+using static TestingFixture;
 
-public class CreateTodoListTests : BaseTestFixture
+public class CreateTodoListTests : IClassFixture<BaseTestFixture>
 {
-    [Test]
+    private readonly BaseTestFixture _fixture;
+
+    public CreateTodoListTests(BaseTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
     public async Task ShouldRequireMinimumFields()
     {
         CreateTodoListCommand command = new();
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidationException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldRequireUniqueTitle()
     {
         await SendAsync(new CreateTodoListCommand { Title = "Shopping" });
@@ -26,7 +33,7 @@ public class CreateTodoListTests : BaseTestFixture
             SendAsync(command)).Should().ThrowAsync<ValidationException>();
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldCreateTodoList()
     {
         string userId = await RunAsDefaultUserAsync();
