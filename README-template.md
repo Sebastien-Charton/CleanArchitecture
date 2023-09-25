@@ -77,6 +77,36 @@ cd .\src\Web\
 dotnet test
 ```
 
+## Docker Compose
+
+```sh
+docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d 
+```
+
+## Database
+
+When you run the application the database will be automatically created (if necessary) and the latest migrations will be
+applied.
+
+Running database migrations is easy. Ensure you add the following flags to your command (values assume you are executing
+from repository root)
+
+* `--project src/Infrastructure` (optional if in this folder)
+* `--startup-project src/Web`
+* `--output-dir Data/Migrations`
+
+For example, to add a new migration from the root folder:
+
+```sh
+dotnet ef migrations add "InitialCommit" --project src\Infrastructure --startup-project src\Web --output-dir Data\Migrations
+```
+
+To create a database :
+
+```sh
+dotnet ef database update --verbose --project src\Infrastructure --startup-project src\Web
+```
+
 ## Help
 
 To learn more about the template go to the [project website](https://github.com/JasonTaylorDev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug, and discuss the template with other users.
