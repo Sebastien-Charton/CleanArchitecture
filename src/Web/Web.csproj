@@ -30,6 +30,12 @@
     <Folder Include="Endpoints\"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="config.nswag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <!-- Auto-generated Open API specification and Angular TypeScript clients -->
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>

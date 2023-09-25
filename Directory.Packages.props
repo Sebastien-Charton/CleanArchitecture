@@ -22,6 +22,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-preview.7.23375.4"/>
     <!--#if (UseSQLite)-->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.7.23375.4"/>
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3"/>
     <!--#endif-->
     <!--#if (UsePostgreSQL)-->
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.7"/>
