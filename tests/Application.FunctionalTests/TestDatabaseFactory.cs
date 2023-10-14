@@ -8,7 +8,7 @@ public static class TestDatabaseFactory
     #if DEBUG
         var database = new PostgreSqlTestDatabase();
     #else
-        var database = new TestcontainersTestDatabase();
+        var database = new TestContainersTestDatabase();
     #endif
 #else
         SqliteTestDatabase database = new();

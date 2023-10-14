@@ -1,21 +1,21 @@
 ﻿using System.Data.Common;
 using CleanArchitecture.Infrastructure.Data;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Respawn;
 using Respawn.Graph;
 using Testcontainers.PostgreSql;
 
 namespace CleanArchitecture.Application.FunctionalTests;
 
-public class TestcontainersTestDatabase : ITestDatabase
+public class TestContainersTestDatabase : ITestDatabase
 {
     private readonly PostgreSqlContainer _container;
     private DbConnection _connection = null!;
     private string _connectionString = null!;
     private Respawner _respawner = null!;
 
-    public TestcontainersTestDatabase()
+    public TestContainersTestDatabase()
     {
         _container = new PostgreSqlBuilder()
             .WithAutoRemove(true)
@@ -28,7 +28,9 @@ public class TestcontainersTestDatabase : ITestDatabase
 
         _connectionString = _container.GetConnectionString();
 
-        _connection = new SqlConnection(_connectionString);
+        _connection = new NpgsqlConnection(_connectionString);
+
+        await _connection.OpenAsync();
 
         DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseNpgsql(_connectionString)
@@ -36,10 +38,13 @@ public class TestcontainersTestDatabase : ITestDatabase
 
         ApplicationDbContext context = new(options);
 
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
 
-        _respawner = await Respawner.CreateAsync(_connectionString,
-            new RespawnerOptions { TablesToIgnore = new Table[] { "__EFMigrationsHistory" } });
+        _respawner = await Respawner.CreateAsync(_connection,
+            new RespawnerOptions
+            {
+                TablesToIgnore = new Table[] { "__EFMigrationsHistory" }, DbAdapter = DbAdapter.Postgres
+            });
     }
 
     public DbConnection GetConnection()
