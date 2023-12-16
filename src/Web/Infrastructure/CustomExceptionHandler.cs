@@ -16,7 +16,9 @@ public class CustomExceptionHandler : IExceptionHandler
             { typeof(ValidationException), HandleValidationException },
             { typeof(NotFoundException), HandleNotFoundException },
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-            { typeof(ForbiddenAccessException), HandleForbiddenAccessException }
+            { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+            { typeof(BadRequestException), HandleBadRequestException },
+            { typeof(Exception), HandleException }
         };
     }
 
@@ -82,6 +84,31 @@ public class CustomExceptionHandler : IExceptionHandler
             Status = StatusCodes.Status403Forbidden,
             Title = "Forbidden",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+        });
+    }
+
+    private async Task HandleBadRequestException(HttpContext httpContext, Exception ex)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+        await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Bad Request",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Detail = ex.Message
+        });
+    }
+
+    private async Task HandleException(HttpContext httpContext, Exception ex)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Status = StatusCodes.Status500InternalServerError,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Title = "Internal Server Error"
         });
     }
 }

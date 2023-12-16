@@ -1,6 +1,20 @@
+using System.Globalization;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Web.Infrastructure.Logging;
+using Microsoft.AspNetCore.Localization;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.{environment}.secrets.json", false, true)
+    .AddJsonFile($"appsettings.{environment}.json", false, true)
+    .Build();
+
+builder.Host.UseSerilog(Serilogger.Configure);
 
 // Add services to the container.
 builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
@@ -8,6 +22,22 @@ builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
+
+var defaultCulture = builder.Configuration
+    .GetValue<string>("CultureInfo:DefaultCulture")!;
+
+var supportedCultures = builder.Configuration
+    .GetSection("CultureInfo:SupportedCultures")
+    .Get<string[]>()!
+    .Select(x => new CultureInfo(x))
+    .ToList();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 WebApplication app = builder.Build();
 
@@ -48,6 +78,8 @@ app.MapEndpoints();
 
 app.Run();
 
+// ReSharper disable once RedundantTypeDeclarationBody
+// ReSharper disable once ClassNeverInstantiated.Global
 public partial class Program
 {
 }
