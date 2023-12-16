@@ -1,31 +1,56 @@
-﻿using CleanArchitecture.Infrastructure.Data;
+﻿using System.Net.Http.Headers;
+using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CleanArchitecture.Application.FunctionalTests;
+namespace Web.IntegrationTests;
 
-public class TestingFixture : IAsyncDisposable
+public abstract class TestingFixture : IAsyncDisposable
 {
-    private static ITestDatabase _database = null!;
-    private static CustomWebApplicationFactory _factory = null!;
-    private static IServiceScopeFactory _scopeFactory = null!;
+    protected static readonly string BaseUri = "http://localhost/api/";
+    private readonly ITestDatabase _database = null!;
+    private readonly CustomWebApplicationFactory _factory = null!;
+    private readonly IServiceScopeFactory _scopeFactory = null!;
+    protected readonly Guid UserId;
+    protected readonly string UserPassword;
 
     public TestingFixture()
     {
         _database = TestDatabaseFactory.CreateAsync().GetAwaiter().GetResult();
 
-        _factory = new CustomWebApplicationFactory(_database.GetConnection());
+        _factory = new CustomWebApplicationFactory(_database.GetConnection(), ConfigureMocks());
 
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
 
-        ResetState().Wait();
+        ApplicationDbContextInitialiser initialiser =
+            _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+
+        ServiceScope = _factory.Services.CreateScope();
+
+        UserId = _factory.DefaultUserId;
+        UserPassword = _factory.DefaultUserPassword;
+
+        // Instantiate http client and mock Auth
+        HttpClient = _factory.CreateClient();
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
+
+        initialiser.SeedAsync().Wait();
     }
+
+    public HttpClient HttpClient { get; }
+
+    protected IServiceScope ServiceScope { get; }
 
     public async ValueTask DisposeAsync()
     {
         await _database.DisposeAsync();
         await _factory.DisposeAsync();
+    }
+
+    protected virtual ServiceDescriptor[] ConfigureMocks()
+    {
+        return Array.Empty<ServiceDescriptor>();
     }
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
@@ -44,17 +69,6 @@ public class TestingFixture : IAsyncDisposable
         ISender mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
         await mediator.Send(request);
-    }
-
-    public async Task ResetState()
-    {
-        try
-        {
-            await _database.ResetAsync();
-        }
-        catch (Exception)
-        {
-        }
     }
 
     public async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)

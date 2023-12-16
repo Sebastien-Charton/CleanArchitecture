@@ -1,14 +1,12 @@
 ﻿using System.Data.Common;
 
-namespace CleanArchitecture.Application.FunctionalTests;
+namespace Web.IntegrationTests;
 
 public interface ITestDatabase
 {
     Task InitialiseAsync();
 
     DbConnection GetConnection();
-
-    Task ResetAsync();
 
     Task DisposeAsync();
 }
