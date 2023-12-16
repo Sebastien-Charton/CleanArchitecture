@@ -59,6 +59,8 @@ app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseRequestLocalization();
+
 app.UseSwaggerUi(settings =>
 {
     settings.Path = "/api";
