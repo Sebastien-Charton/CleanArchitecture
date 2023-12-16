@@ -2,5 +2,7 @@
 
 public interface IUser
 {
-    string? Id { get; }
+    Guid? Id { get; }
+    string? Email { get; }
+    string? UserName { get; }
 }

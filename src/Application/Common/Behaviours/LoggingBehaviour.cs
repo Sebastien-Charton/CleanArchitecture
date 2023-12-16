@@ -18,16 +18,9 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     public Task Process(TRequest request, CancellationToken cancellationToken)
     {
         string requestName = typeof(TRequest).Name;
-        string userId = _user.Id ?? string.Empty;
-        string? userName = string.Empty;
-
-        if (!string.IsNullOrEmpty(userId))
-        {
-            userName = "Logger";
-        }
 
         _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}",
-            requestName, userId, userName, request);
+            requestName, _user.Id, _user.UserName, request);
         return Task.CompletedTask;
     }
 }

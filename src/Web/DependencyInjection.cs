@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Web.Infrastructure.Filters;
 using CleanArchitecture.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
@@ -60,6 +61,8 @@ public static class DependencyInjection
                     In = OpenApiSecurityApiKeyLocation.Header,
                     Description = "Type into the textbox: Bearer {your JWT token}."
                 });
+
+            configure.OperationProcessors.Add(new AcceptedLanguageOperationFilter());
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
