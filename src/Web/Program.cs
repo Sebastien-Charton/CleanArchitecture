@@ -1,5 +1,8 @@
 using System.Globalization;
+using CleanArchitecture.Application;
+using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Web;
 using CleanArchitecture.Web.Infrastructure.Logging;
 using Microsoft.AspNetCore.Localization;
 using Serilog;
@@ -80,6 +83,9 @@ app.Run();
 
 // ReSharper disable once RedundantTypeDeclarationBody
 // ReSharper disable once ClassNeverInstantiated.Global
-public partial class Program
+namespace CleanArchitecture.Web
 {
+    public class Program
+    {
+    }
 }

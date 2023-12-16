@@ -8,7 +8,7 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace CleanArchitecture.Web;
 
 public static class DependencyInjection
 {
