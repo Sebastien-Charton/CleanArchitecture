@@ -18,7 +18,7 @@ The easiest way to get started is to install
 the [.NET template](https://www.nuget.org/packages/Clean.Architecture.Solution.Template):
 
 ```
-dotnet new install Sebastien.Charton.Clean.Architecture.Solution.Template::1.4.0
+dotnet new install Sebastien.Charton.Clean.Architecture.Solution.Template::1.5.0
 ```
 
 To create a ASP.NET Core Web API-only solution:
